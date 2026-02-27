@@ -1,7 +1,8 @@
+@implements IDisposable
 @inject Services.ThemeService ThemeService
 @rendermode InteractiveServer
 
-<button class="btn btn-link nav-link" @onclick="ToggleTheme" title="Toggle theme">
+<button class="btn btn-link nav-link" @onclick="ToggleTheme" title="Toggle theme" aria-label="Toggle dark mode">
     @if (ThemeService.IsDarkMode)
     {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -28,5 +29,20 @@
     private async Task ToggleTheme()
     {
         await ThemeService.ToggleThemeAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        ThemeService.OnThemeChanged += OnThemeChanged;
+    }
+
+    private void OnThemeChanged()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnThemeChanged -= OnThemeChanged;
     }
 }

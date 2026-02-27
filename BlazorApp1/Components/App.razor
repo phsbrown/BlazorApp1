@@ -20,11 +20,7 @@
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
     <script>
-        window.initTheme = async () => {
-            const theme = localStorage.getItem('app-theme') || 'light';
-            document.documentElement.setAttribute('data-bs-theme', theme);
-        };
-        window.initTheme();
+        window.getTheme = () => localStorage.getItem('app-theme') || 'light';
     </script>
 </body>
 

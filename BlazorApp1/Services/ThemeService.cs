@@ -12,8 +12,15 @@ public class ThemeService(IJSRuntime jsRuntime)
 
     public async Task InitializeAsync()
     {
-        var theme = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", ThemeKey);
-        IsDarkMode = theme == "dark";
+        try
+        {
+            var theme = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", ThemeKey);
+            IsDarkMode = theme == "dark";
+        }
+        catch
+        {
+            IsDarkMode = false;
+        }
         await ApplyThemeAsync();
     }
 
