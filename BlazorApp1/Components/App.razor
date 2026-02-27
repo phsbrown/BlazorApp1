@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+@inject ThemeService ThemeService
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,6 +19,23 @@
     <Routes />
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script>
+        window.initTheme = async () => {
+            const theme = localStorage.getItem('app-theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        };
+        window.initTheme();
+    </script>
 </body>
 
 </html>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ThemeService.InitializeAsync();
+        }
+    }
+}
